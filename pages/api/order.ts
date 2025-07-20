@@ -72,8 +72,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } else {
             res.status(400).json({ error: result.message || 'Payment failed' })
         }
-    } catch (error: any) {
+    } catch (error) {
         console.error(error)
-        res.status(500).json({ error: error.message || 'Internal Server Error' })
+        res.status(500)
     }
 }

@@ -50,8 +50,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             price: order.amountsBreakdown?.customer || 0,
             deliveryAddress: order.address,
         })
-    } catch (error: any) {
+    } catch (error) {
         console.error(error)
-        res.status(500).json({ error: error.message || 'Internal Server Error' })
+        res.status(500)
     }
 }

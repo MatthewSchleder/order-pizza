@@ -6,7 +6,6 @@ export default function Home() {
   const [loadingPrice, setLoadingPrice] = useState(true)
   const [loadingOrder, setLoadingOrder] = useState(false)
   const [price, setPrice] = useState<number | null>(null)
-  const [tax, setTax] = useState<number | null>(null)
   const [address, setAddress] = useState<null | {
     street: string
     city: string
@@ -24,7 +23,6 @@ export default function Home() {
 
       if (res.ok && data.success) {
         setPrice(data.price)
-        setTax(data.tax)
         setAddress(data.deliveryAddress)
       } else {
         setMessage(`❌ Failed to get price: ${data.error || 'Unknown error'}`)
