@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const customer = new Customer({
             address: process.env.CUSTOMER_ADDRESS!,
             firstName: 'Matt',
-            lastName: 'IsCool',
+            lastName: 'Schleder',
             phone: process.env.CUSTOMER_PHONE!,
             email: process.env.CUSTOMER_EMAIL!
         });
