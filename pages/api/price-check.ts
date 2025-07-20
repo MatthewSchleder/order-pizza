@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const customer = new Customer({
             address: process.env.CUSTOMER_ADDRESS!,
             firstName: 'Matt',
-            lastName: 'Schleder',
+            lastName: 'IsCool',
             phone: process.env.CUSTOMER_PHONE!,
             email: process.env.CUSTOMER_EMAIL!
         });
@@ -18,13 +18,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const serviceMethod = 'Carside'
         const order = new Order(customer);
 
-        order.storeID=storeID;
-        order.serviceMethod=serviceMethod;
+        order.storeID = storeID;
+        order.serviceMethod = serviceMethod;
 
         order.addItem(new Item({
             code: 'P12IPAZA',
             quantity: 1,
-            options: { "X": { "1/1": "1"}, "C": {"1/1": "1"},"Cp": {"1/1": "1"},"P": {"1/1": "1"},"S": {"1/1": "1"} },
+            options: { "X": { "1/1": "1" }, "C": { "1/1": "1" }, "Cp": { "1/1": "1" }, "P": { "1/1": "1" }, "S": { "1/1": "1" } },
         }))
 
         order.addItem(new Item({
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             code: 'MARINARA',
             quantity: 3,
         }))
-        const coupon={'Code':'9227'};
+        const coupon = { 'Code': '9227' };
         order.addCoupon(coupon)
 
         await order.validate();
@@ -50,8 +50,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             price: order.amountsBreakdown?.customer || 0,
             deliveryAddress: order.address,
         })
-    } catch (error) {
-        console.error(error)
-        res.status(500)
+    } catch (error: unknown) {
+        let errorMessage = 'Something went wrong'
+
+        if (error instanceof Error) {
+            errorMessage = error.message
+        }
+
+        console.error('API Error:', error)
+
+        res.status(500).json({
+            success: false,
+            error: errorMessage,
+        })
     }
+
 }

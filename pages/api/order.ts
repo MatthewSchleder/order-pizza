@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const customer = new Customer({
             address: process.env.CUSTOMER_ADDRESS!,
             firstName: 'Matt',
-            lastName: 'Schleder',
+            lastName: 'IsCool',
             phone: process.env.CUSTOMER_PHONE!,
             email: process.env.CUSTOMER_EMAIL!
         });
@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             code: 'MARINARA',
             quantity: 3,
         }))
-        const coupon={'Code':'9227'};
+        const coupon = { 'Code': '9227' };
         order.addCoupon(coupon)
 
         await order.validate();
@@ -72,8 +72,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } else {
             res.status(400).json({ error: result.message || 'Payment failed' })
         }
-    } catch (error) {
-        console.error(error)
-        res.status(500)
+    } catch (error: unknown) {
+        let errorMessage = 'Something went wrong'
+
+        if (error instanceof Error) {
+            errorMessage = error.message
+        }
+
+        console.error('API Error:', error)
+
+        res.status(500).json({
+            success: false,
+            error: errorMessage,
+        })
     }
+
 }
